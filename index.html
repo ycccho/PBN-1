@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>인테리어 인사이트 | 안전한 공사 가이드</title>
+    <meta name="google-site-verification" content="rQ3T4Zb0qsnyiDBuBfghNWEo0M7zaJluYtVWXfZhH2Q" />
+    <meta name="naver-site-verification" content="d1d86244e02f57ee0565514d2c14b8e3da4ac528" />
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,8 +68,32 @@
             </div>
         </section>
 
+        <section class="calculator-section">
+            <div class="container">
+                <h3 class="section-subtitle">간편 면적 & 시공비 계산기</h3>
+                <div class="calc-card">
+                    <div class="calc-row">
+                        <div class="calc-group">
+                            <label>평수 (평)</label>
+                            <input type="number" id="input-pyeong" placeholder="평 입력" oninput="calcArea('p')">
+                        </div>
+                        <div class="calc-icon">⇄</div>
+                        <div class="calc-group">
+                            <label>면적 (m²)</label>
+                            <input type="number" id="input-m2" placeholder="m² 입력" oninput="calcArea('m')">
+                        </div>
+                    </div>
+                    <div class="calc-result">
+                        <p>예상 시공 비용 (평당 100만원 기준)</p>
+                        <strong id="calc-cost">0 원</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="backlinks">
             <div class="container">
+                <h3 class="section-subtitle">파트너 사이트</h3>
                 <div class="backlink-grid">
                     <a href="https://inde.co.kr" target="_blank" class="backlink-item">
                         <span class="label">Official</span>
@@ -136,11 +162,49 @@
 
         document.getElementById("open-policy").onclick = function() { openModal('policy-modal'); }
 
+        // Calculator Logic
+        function calcArea(type) {
+            const pInput = document.getElementById('input-pyeong');
+            const mInput = document.getElementById('input-m2');
+            const costText = document.getElementById('calc-cost');
+            const pVal = parseFloat(pInput.value);
+            const mVal = parseFloat(mInput.value);
+
+            if (type === 'p') {
+                if (!isNaN(pVal)) {
+                    mInput.value = (pVal * 3.3057).toFixed(2);
+                    costText.innerText = (pVal * 1000000).toLocaleString() + " 원";
+                } else {
+                    mInput.value = "";
+                    costText.innerText = "0 원";
+                }
+            } else {
+                if (!isNaN(mVal)) {
+                    const py = mVal * 0.3025;
+                    pInput.value = py.toFixed(2);
+                    costText.innerText = (py * 1000000).toLocaleString() + " 원";
+                } else {
+                    pInput.value = "";
+                    costText.innerText = "0 원";
+                }
+            }
+        }
+
         // Blog Data Management
         const defaultPosts = [
-            { id: 1, title: "인테리어 사기 안당하는 법 3가지", date: "2026.03.01", desc: "가장 중요한 것은 실내건축공사 면허 보유 여부입니다. 면허가 없는 업체와의 계약은 추후 법적 분쟁 시 매우 불리하게 작용할 수 있습니다. 또한 공사 대금을 지나치게 선불로 요구하는 경우도 주의해야 합니다.", content: "인테리어 공사를 계획 중이시라면 반드시 다음 세 가지를 확인하세요.\n\n1. KISCON을 통한 실내건축공사업 면허 조회\n2. 하자이행보증보험 가입 가능 여부 확인\n3. 상세한 견적서와 공정표 요청\n\n이 세 가지만 지켜도 대형 사기 피해를 예방할 수 있습니다." },
-            { id: 2, title: "부산 아파트 리모델링 시 주의사항", date: "2026.02.28", desc: "단지별 관리사무소 협의 및 공사 신고 절차 안내입니다. 특히 노후 아파트의 경우 배관 및 결로 문제 해결이 시급합니다.", content: "부산 지역 아파트 리모델링은 습도가 높은 해안가 특성을 고려해야 합니다.\n\n- 단열 공사: 결로 방지를 위한 프리미엄 단열재 사용 권장\n- 소음 신고: 공사 최소 2주 전 관리사무소 신고 및 주민 동의 확보\n- 폐기물 처리: 정식 등록된 폐기물 처리 업체 이용\n\n안전하고 쾌적한 리모델링의 첫 걸음은 철저한 준비입니다." },
-            { id: 3, title: "실내건축면허 조회 방법 안내", date: "2026.02.25", desc: "국토교통부 운영 키스콘을 통한 정확한 업체 확인법. 업체명만 알면 누구나 1분만에 조회가 가능합니다.", content: "많은 분들이 인테리어 업체의 말만 믿고 공사를 진행합니다. 하지만 사실 여부는 직접 확인해야 합니다.\n\nKISCON 사이트 접속 후 '업체조회' 메뉴에서 업체명을 검색하세요. 실내건축공사업 면허가 검색되지 않는다면 1,500만원 이상의 공사를 맡겨서는 안 됩니다." }
+            { id: 1, title: "인테리어 사기 안당하는 법 3가지", date: "2026.03.01", desc: "가장 중요한 것은 실내건축공사 면허 보유 여부입니다. 면허가 없는 업체와의 계약은 추후 법적 분쟁 시 매우 불리하게 작용할 수 있습니다.", content: "인테리어 공사를 계획 중이시라면 반드시 다음 세 가지를 확인하세요.\n\n1. KISCON을 통한 실내건축공사업 면허 조회\n2. 하자이행보증보험 가입 가능 여부 확인\n3. 상세한 견적서와 공정표 요청" },
+            { id: 2, title: "부산 아파트 리모델링 시 주의사항", date: "2026.02.28", desc: "단지별 관리사무소 협의 및 공사 신고 절차 안내입니다. 특히 노후 아파트의 경우 배관 및 결로 문제 해결이 시급합니다.", content: "부산 지역 아파트 리모델링은 습도가 높은 해안가 특성을 고려해야 합니다.\n\n- 단열 공사: 결로 방지를 위한 프리미엄 단열재 사용 권장\n- 소음 신고: 공사 최소 2주 전 관리사무소 신고 및 주민 동의 확보" },
+            { id: 3, title: "실내건축면허 조회 방법 안내", date: "2026.02.25", desc: "국토교통부 운영 키스콘을 통한 정확한 업체 확인법. 업체명만 알면 누구나 1분만에 조회가 가능합니다.", content: "KISCON 사이트 접속 후 '업체조회' 메뉴에서 업체명을 검색하세요. 실내건축공사업 면허가 검색되지 않는다면 1,500만원 이상의 공사를 맡겨서는 안 됩니다." },
+            { id: 4, title: "거실 인테리어, 넓어 보이는 배치 팁", date: "2026.02.20", desc: "가구의 높이를 낮추고 여백을 활용하는 것이 거실을 더 넓어 보이게 하는 핵심 전략입니다.", content: "1. 낮은 소파 선택\n2. 벽면 색상과 맞춘 커튼 설치\n3. 다리가 얇은 가구 활용으로 개방감 확보" },
+            { id: 5, title: "조명 하나로 바뀌는 침실 분위기", date: "2026.02.18", desc: "메인 조명보다는 간접 조명과 스탠드를 활용하여 아늑한 침실 무드를 조성하는 방법을 소개합니다.", content: "침실은 휴식의 공간입니다. 3000K 내외의 전구색 조명을 활용해 눈의 피로를 낮추고 심리적 안정감을 높이세요." },
+            { id: 6, title: "주방 동선 설계의 기본, 삼각 동선", date: "2026.02.15", desc: "냉장고, 개수대, 가열대의 배치를 최적화하여 요리 시간을 단축하는 주방 동선 가이드입니다.", content: "삼각 동선(Work Triangle)의 합이 4~6미터 사이일 때 가장 효율적인 주방 작업이 가능합니다." },
+            { id: 7, title: "욕실 타일 선택 가이드: 미끄럼 방지 필수", date: "2026.02.12", desc: "미적인 요소만큼 중요한 안전! 욕실 바닥 타일 선택 시 반드시 확인해야 할 논슬립 등급 안내입니다.", content: "욕실 바닥은 R10 이상의 논슬립 등급을 가진 포세린 타일을 추천합니다." },
+            { id: 8, title: "베란다 확장 공사 시 결로 방지 대책", date: "2026.02.10", desc: "단열 공사가 미흡하면 곰팡이의 원인이 됩니다. 베란다 확장 시 필수적인 단열재 시공법을 알아봅니다.", content: "우레탄 폼 단열과 이중창 설치는 선택이 아닌 필수입니다. 틈새 없는 시공이 결로를 막습니다." },
+            { id: 9, title: "중문 설치가 냉난방비 절감에 미치는 영향", date: "2026.02.08", desc: "현관에서 들어오는 찬바람을 막아주는 중문의 에너지 절감 효과와 소음 차단 기능을 분석합니다.", content: "중문 설치만으로도 실내 온도를 2~3도 가량 높게 유지할 수 있어 난방비 절감에 큰 도움이 됩니다." },
+            { id: 10, title: "작은 방 수납 공간 극대화 전략", date: "2026.02.05", desc: "수직 공간과 가구 밑 공간을 활용하여 좁은 방을 더 효율적으로 사용하는 수납 팁입니다.", content: "상부장 설치와 멀티 가구(수납형 침대 등)를 활용하여 바닥 노출 면적을 최대한 확보하세요." },
+            { id: 11, title: "친환경 페인트와 일반 페인트의 차이점", date: "2026.02.03", desc: "VOC 배출량과 냄새, 건강에 미치는 영향을 중심으로 친환경 페인트 선택의 중요성을 알아봅니다.", content: "친환경 인증 마크를 확인하세요. 아토피나 호흡기 질환이 있다면 수성 친환경 페인트가 정답입니다." },
+            { id: 12, title: "마루 종류별 장단점 비교 (강마루 vs 강화마루)", date: "2026.02.01", desc: "내구성과 열전도율, 시공 방식에 따른 국내 바닥재 시장의 두 강자를 완벽 비교 분석합니다.", content: "찍힘에 강한 강화마루와 보행감 및 열전도율이 좋은 강마루 중 본인의 라이프스타일에 맞는 선택을 돕습니다." },
+            { id: 13, title: "플랜테리어: 실내 공기 정화 식물 추천", date: "2026.01.28", desc: "인테리어 효과와 공기 정화 기능을 동시에 잡는 초보자용 식물 리스트를 공개합니다.", content: "스투키, 산세베리아, 고무나무는 관리가 쉬우면서도 공기 정화 능력이 탁월한 식물입니다." }
         ];
 
         function getPosts() {
@@ -165,7 +229,7 @@
         function renderFeed() {
             const feed = document.getElementById('main-blog-feed');
             feed.innerHTML = '';
-            const posts = getPosts().slice(0, 3);
+            const posts = getPosts();
             
             posts.forEach(post => {
                 const div = document.createElement('div');
