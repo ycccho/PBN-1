@@ -8,6 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%23dd5828%22/><text x=%2250%%22 y=%2250%%22 dominant-baseline=%22central%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2260%22 fill=%22white%22 font-weight=%22bold%22>IN</text></svg>">
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "voyfhbiruk");
+    </script>
 </head>
 <body>
     <header>
@@ -76,12 +84,70 @@
                 </div>
             </div>
         </section>
+
+        <section class="blog-feed">
+            <div class="container">
+                <h3 class="section-subtitle">최신 인테리어 가이드</h3>
+                <div class="blog-grid" id="main-blog-feed">
+                    <!-- Posts will be loaded here -->
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="blog.html" class="btn-more">더 많은 정보 보기</a>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <div id="policy-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>개인정보처리방침</h3>
+            <div class="modal-body">
+                <p>본 사이트는 이용자의 개인정보를 중요시하며, 관련 법령을 준수합니다.</p>
+                <p><strong>1. 수집하는 개인정보 항목:</strong> 본 사이트는 별도의 회원가입 없이 이용 가능하며, 서비스 이용 과정에서 쿠키, 접속 IP 정보 등이 자동 생성되어 수집될 수 있습니다.</p>
+                <p><strong>2. 개인정보의 수집 및 이용목적:</strong> 수집된 정보는 사이트 이용 통계 분석 및 서비스 개선을 위해 사용됩니다.</p>
+                <p><strong>3. 개인정보의 보유 및 이용기간:</strong> 원칙적으로 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다.</p>
+                <p><strong>4. 이용자의 권리:</strong> 이용자는 언제든지 자신의 개인정보를 조회하거나 삭제를 요청할 수 있습니다.</p>
+            </div>
+        </div>
+    </div>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 <a href="#" class="policy-link">개인정보처리방침</a>. All Rights Reserved.</p>
+            <p>&copy; 2026 <a href="javascript:void(0)" class="policy-link" id="open-policy">개인정보처리방침</a>. All Rights Reserved.</p>
         </div>
     </footer>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById("policy-modal");
+        const btn = document.getElementById("open-policy");
+        const span = document.getElementsByClassName("close-modal")[0];
+
+        btn.onclick = function() { modal.style.display = "block"; }
+        span.onclick = function() { modal.style.display = "none"; }
+        window.onclick = function(event) {
+            if (event.target == modal) { modal.style.display = "none"; }
+        }
+
+        // Blog Feed Logic (Mocking 3 items)
+        const blogData = [
+            { title: "인테리어 사기 안당하는 법 3가지", date: "2026.03.01", desc: "가장 중요한 것은 실내건축공사 면허 보유 여부입니다..." },
+            { title: "부산 아파트 리모델링 시 주의사항", date: "2026.02.28", desc: "단지별 관리사무소 협의 및 공사 신고 절차 안내입니다..." },
+            { title: "실내건축면허 조회 방법 안내", date: "2026.02.25", desc: "국토교통부 운영 키스콘을 통한 정확한 업체 확인법..." }
+        ];
+
+        const feed = document.getElementById('main-blog-feed');
+        blogData.forEach(post => {
+            const div = document.createElement('div');
+            div.className = 'blog-feed-item';
+            div.innerHTML = `
+                <h4>${post.title}</h4>
+                <p>${post.desc}</p>
+                <span>${post.date}</span>
+            `;
+            feed.appendChild(div);
+        });
+    </script>
 </body>
 </html>
