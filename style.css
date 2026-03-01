@@ -1,1 +1,209 @@
-/* Add styles here */
+:root {
+    --primary-color: #dd5828;
+    --text-color: #333;
+    --bg-light: #f9f9f9;
+    --white: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--white);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    padding: 40px 0;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+header h1 {
+    color: var(--primary-color);
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+section {
+    padding: 80px 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.section-title span {
+    color: var(--primary-color);
+}
+
+/* Card News Section */
+.license-info {
+    background-color: var(--bg-light);
+}
+
+.card-news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.card {
+    background: var(--white);
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: rgba(221, 88, 40, 0.1);
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.card h3 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    font-size: 1.25rem;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.kiscon-box {
+    text-align: center;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 15px;
+    border: 2px dashed var(--primary-color);
+}
+
+.kiscon-box p {
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.btn-kiscon {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background 0.3s ease;
+}
+
+.btn-kiscon:hover {
+    background-color: #c44a1f;
+}
+
+/* Features Section */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+
+.feature-item .icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.feature-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.feature-item p {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Backlinks Section */
+.backlinks {
+    background-color: #333;
+    padding: 60px 0;
+}
+
+.backlink-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.backlink-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #444;
+    padding: 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.3s ease;
+    border: 1px solid #555;
+    text-align: center;
+}
+
+.backlink-item:hover {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.backlink-item .label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    opacity: 0.7;
+}
+
+.backlink-item strong {
+    font-size: 1rem;
+}
+
+/* Footer */
+footer {
+    padding: 30px 0;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #888;
+    border-top: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
