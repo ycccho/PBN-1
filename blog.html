@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인테리어 인사이트 | 블로그</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        .blog-container { padding: 40px 0; }
+        .post-form { background: #f9f9f9; padding: 20px; border-radius: 10px; margin-bottom: 40px; }
+        .post-form input, .post-form textarea { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .post-form button { background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+        .post-list { list-style: none; }
+        .post-item { border-bottom: 1px solid #eee; padding: 20px 0; }
+        .post-item h3 { margin-bottom: 5px; color: var(--primary-color); }
+        .post-item span { font-size: 0.8rem; color: #999; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="/" style="text-decoration: none; color: inherit;">INTERIOR INSIGHT</a></h1>
+        </div>
+    </header>
+
+    <main class="container blog-container">
+        <h2>실내건축 정보 게시판</h2>
+        
+        <div class="post-form">
+            <h3>게시글 작성</h3>
+            <input type="text" id="post-title" placeholder="제목을 입력하세요">
+            <textarea id="post-content" rows="4" placeholder="내용을 입력하세요"></textarea>
+            <button onclick="addPost()">등록하기</button>
+        </div>
+
+        <ul class="post-list" id="post-list">
+            <li class="post-item">
+                <h3>인테리어 사기 안당하는 법 3가지</h3>
+                <p>가장 중요한 것은 실내건축공사 면허 보유 여부입니다...</p>
+                <span>2026.03.01</span>
+            </li>
+            <li class="post-item">
+                <h3>부산 아파트 리모델링 시 주의사항</h3>
+                <p>단지별 관리사무소 협의 및 공사 신고 절차 안내입니다...</p>
+                <span>2026.02.28</span>
+            </li>
+        </ul>
+    </main>
+
+    <script>
+        function addPost() {
+            const title = document.getElementById('post-title').value;
+            const content = document.getElementById('post-content').value;
+            if(!title || !content) return alert('제목과 내용을 입력해주세요.');
+
+            const list = document.getElementById('post-list');
+            const li = document.createElement('li');
+            li.className = 'post-item';
+            const date = new Date().toLocaleDateString();
+            li.innerHTML = `<h3>${title}</h3><p>${content}</p><span>${date}</span>`;
+            list.prepend(li);
+
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            alert('게시글이 등록되었습니다. (로컬 테스트용)');
+        }
+    </script>
+</body>
+</html>
