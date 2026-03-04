@@ -24,17 +24,23 @@ const defaultPosts = [
 
 // Auth Logic
 function checkAuth() {
-    if (!window.location.pathname.includes('dashboard.html') && !window.location.pathname.includes('editor.html')) return;
+    const path = window.location.pathname;
+    const isAdminPage = path.includes('dashboard.html') || path.includes('editor.html');
+    
+    if (!isAdminPage) return;
+    
     if (sessionStorage.getItem('is_admin') === 'true') return;
     
-    const pw = prompt('관리자 비밀번호를 입력하세요.');
+    const pw = prompt('관리자 보안 인증: 비밀번호를 입력하세요.');
     if (pw === '1') {
         sessionStorage.setItem('is_admin', 'true');
     } else {
-        alert('비밀번호가 틀렸습니다.');
-        location.href = 'index.html';
+        alert('인증에 실패했습니다. 메인 페이지로 이동합니다.');
+        window.location.href = 'index.html';
     }
 }
+
+// 즉시 실행하여 페이지 렌더링 전 차단 시도
 checkAuth();
 
 // Analytics Logic

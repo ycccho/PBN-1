@@ -58,6 +58,8 @@
 
     <script src="main.js"></script>
     <script>
+        if(typeof checkAuth === 'function') checkAuth();
+
         function addNewPost() {
             const title = document.getElementById('post-title').value;
             const desc = document.getElementById('post-desc').value;

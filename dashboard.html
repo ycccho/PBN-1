@@ -112,6 +112,9 @@
 
     <script src="main.js"></script>
     <script>
+        // 즉시 보안 체크
+        if(typeof checkAuth === 'function') checkAuth();
+        
         // Load Analytics
         function loadStats() {
             const stats = JSON.parse(localStorage.getItem('pbn_stats') || '{"views": {}, "referrers": {}}');
