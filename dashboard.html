@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인테리어 인사이트 | 통합 관리자 센터</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-dashboard { padding: 40px 0; background: #f4f7f6; min-height: 100vh; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, min-minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .stat-card h3 { font-size: 1rem; color: #666; margin-bottom: 15px; border-bottom: 2px solid var(--primary-color); display: inline-block; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--secondary-color); }
+        
+        .admin-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th, .data-table td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        .data-table th { background: #fafafa; font-weight: 700; color: #444; }
+        
+        .btn-edit { background: #3498db; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; border: none; cursor: pointer; }
+        .btn-delete { background: #e74c3c; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; border: none; cursor: pointer; margin-left: 5px; }
+        
+        /* Edit Form inside Modal */
+        .edit-form label { display: block; margin-bottom: 8px; font-weight: 700; color: #444; }
+        .edit-form input, .edit-form textarea { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; }
+        .edit-form button { width: 100%; padding: 15px; background: var(--secondary-color); color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        
+        .inflow-list { list-style: none; }
+        .inflow-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #eee; }
+        .inflow-count { font-weight: 700; color: var(--primary-color); }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 style="display: flex; justify-content: space-between; align-items: center;">
+                <a href="/" style="text-decoration: none; color: inherit;">INTERIOR INSIGHT ADMIN</a>
+                <span style="font-size: 0.9rem; font-weight: 400; opacity: 0.8;">통합 관리 시스템 v1.0</span>
+            </h1>
+        </div>
+    </header>
+
+    <main class="admin-dashboard">
+        <div class="container">
+            <!-- 1. 통계 섹션 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>오늘의 조회수</h3>
+                    <div class="stat-value" id="today-views">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>전체 게시글 수</h3>
+                    <div class="stat-value" id="total-posts">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>주요 유입경로</h3>
+                    <ul class="inflow-list" id="inflow-list" style="margin-top: 10px; font-size: 0.9rem;">
+                        <!-- Inflow paths will be loaded here -->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <div class="section-header">
+                    <h2>게시글 관리</h2>
+                    <div>
+                        <button class="btn-edit" onclick="resetData()" style="background: #95a5a6; margin-right: 10px;">데이터 초기화(캐시삭제)</button>
+                        <button class="btn-kiscon" onclick="location.href='post-manage.html'" style="padding: 10px 20px;">새 글 작성하기</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>날짜</th>
+                                <th>제목</th>
+                                <th>요약</th>
+                                <th>관리</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-post-list">
+                            <!-- Posts will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 수정 모달 -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content" style="max-width: 800px;">
+            <span class="close-modal" onclick="closeModal('edit-modal')">&times;</span>
+            <h3 style="margin-bottom: 20px;">게시글 수정</h3>
+            <div class="edit-form">
+                <input type="hidden" id="edit-post-id">
+                <label>제목</label>
+                <input type="text" id="edit-post-title">
+                <label>요약 내용 (메인 피드 노출)</label>
+                <textarea id="edit-post-desc" rows="2"></textarea>
+                <label>상세 본문 (HTML 가능)</label>
+                <textarea id="edit-post-content" rows="12"></textarea>
+                <button onclick="savePostEdit()">수정사항 저장하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Load Analytics
+        function loadStats() {
+            const stats = JSON.parse(localStorage.getItem('pbn_stats') || '{"views": {}, "referrers": {}}');
+            const today = new Date().toLocaleDateString();
+            
+            document.getElementById('today-views').innerText = (stats.views[today] || 0).toLocaleString();
+            
+            const inflowList = document.getElementById('inflow-list');
+            inflowList.innerHTML = '';
+            
+            // Sort referrers by count
+            const sortedReferrers = Object.entries(stats.referrers)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            if(sortedReferrers.length === 0) {
+                inflowList.innerHTML = '<li>유입 데이터가 없습니다.</li>';
+            } else {
+                sortedReferrers.forEach(([domain, count]) => {
+                    inflowList.innerHTML += `
+                        <li class="inflow-item">
+                            <span>${domain}</span>
+                            <span class="inflow-count">${count}회</span>
+                        </li>
+                    `;
+                });
+            }
+        }
+
+        // Load Posts for Management
+        function loadAdminPosts() {
+            const posts = getPosts();
+            document.getElementById('total-posts').innerText = posts.length;
+            
+            const list = document.getElementById('admin-post-list');
+            list.innerHTML = '';
+            
+            posts.forEach(post => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-size: 0.8rem; color: #999; white-space: nowrap;">${post.date}</td>
+                    <td style="font-weight: 700; color: var(--secondary-color); min-width: 200px;">${post.title}</td>
+                    <td style="font-size: 0.85rem; color: #666; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${post.desc}</td>
+                    <td style="white-space: nowrap;">
+                        <button class="btn-edit" onclick="openEditModal(${post.id})">수정</button>
+                        <button class="btn-delete" onclick="handleDelete(${post.id})">삭제</button>
+                    </td>
+                `;
+                list.appendChild(tr);
+            });
+        }
+
+        function openEditModal(id) {
+            const post = getPosts().find(p => p.id == id);
+            if(!post) return;
+
+            document.getElementById('edit-post-id').value = post.id;
+            document.getElementById('edit-post-title').value = post.title;
+            document.getElementById('edit-post-desc').value = post.desc;
+            document.getElementById('edit-post-content').value = post.content || post.desc;
+            
+            openModal('edit-modal');
+        }
+
+        function savePostEdit() {
+            const id = document.getElementById('edit-post-id').value;
+            const updatedData = {
+                title: document.getElementById('edit-post-title').value,
+                desc: document.getElementById('edit-post-desc').value,
+                content: document.getElementById('edit-post-content').value
+            };
+
+            if(updatePost(id, updatedData)) {
+                alert('수정되었습니다.');
+                closeModal('edit-modal');
+                loadAdminPosts();
+            }
+        }
+
+        function handleDelete(id) {
+            if(!confirm('정말 삭제하시겠습니까? 데이터는 복구되지 않습니다.')) return;
+            const posts = getPosts().filter(p => p.id != id);
+            savePosts(posts);
+            loadAdminPosts();
+        }
+
+        function resetData() {
+            if(!confirm('모든 게시글 설정과 통계 데이터가 초기화되고 기본 데이터로 복구됩니다. 진행하시겠습니까?')) return;
+            localStorage.removeItem('pbn_posts');
+            localStorage.removeItem('pbn_stats');
+            alert('데이터가 초기화되었습니다.');
+            location.reload();
+        }
+
+        // Initialize
+        window.onload = () => {
+            loadStats();
+            loadAdminPosts();
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인테리어 인사이트 | 게시글 작성 센터</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        .blog-container { padding: 40px 0; }
+        .post-form { background: #f9f9f9; padding: 25px; border-radius: 10px; margin-bottom: 40px; border: 1px solid #eee; }
+        .post-form h3 { margin-bottom: 20px; color: var(--primary-color); }
+        .post-form input, .post-form textarea { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; font-family: inherit; }
+        .post-form button { background: var(--primary-color); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: 700; }
+        .post-list { list-style: none; }
+        .post-item { border-bottom: 1px solid #eee; padding: 25px 0; cursor: pointer; transition: background 0.2s; }
+        .post-item:hover { background: #fafafa; }
+        .post-item h3 { margin-bottom: 10px; color: var(--secondary-color); }
+        .post-item p { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .post-item .meta { font-size: 0.8rem; color: #999; display: flex; justify-content: space-between; }
+        .btn-delete { color: #e74c3c; cursor: pointer; border: none; background: none; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="/" style="text-decoration: none; color: inherit;">INTERIOR INSIGHT</a></h1>
+        </div>
+    </header>
+
+    <main class="container blog-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>게시글 작성 센터</h2>
+            <button class="btn-edit" onclick="location.href='admin-center.html'" style="background: var(--secondary-color); padding: 10px 20px; color: white; border: none; border-radius: 5px; cursor: pointer;">대시보드로 돌아가기</button>
+        </div>
+        
+        <div class="post-form">
+            <h3>새 게시글 작성</h3>
+            <input type="text" id="post-title" placeholder="제목을 입력하세요">
+            <textarea id="post-desc" rows="2" placeholder="간략한 요약 내용을 입력하세요 (메인 피드 노출)"></textarea>
+            <textarea id="post-content" rows="10" placeholder="상세 내용을 입력하세요 (HTML 태그 사용 가능)"></textarea>
+            <button onclick="addNewPost()">등록하기</button>
+        </div>
+
+        <ul class="post-list" id="post-list">
+            <!-- Posts will be loaded here -->
+        </ul>
+    </main>
+
+    <div id="post-modal" class="modal">
+        <div class="modal-content post-detail">
+            <span class="close-modal" onclick="closeModal('post-modal')">&times;</span>
+            <div id="post-detail-content"></div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        function addNewPost() {
+            const title = document.getElementById('post-title').value;
+            const desc = document.getElementById('post-desc').value;
+            const content = document.getElementById('post-content').value;
+            
+            if(!title || !content) return alert('제목과 상세 내용을 입력해주세요.');
+
+            const posts = getPosts();
+            const newPost = {
+                id: Date.now(),
+                title: title,
+                desc: desc || title,
+                content: content,
+                date: new Date().toLocaleDateString()
+            };
+
+            posts.unshift(newPost);
+            savePosts(posts);
+
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-desc').value = '';
+            document.getElementById('post-content').value = '';
+            alert('게시글이 등록되었습니다.');
+            renderAdminPosts();
+        }
+
+        function deletePost(id, e) {
+            e.stopPropagation();
+            if(!confirm('정말 삭제하시겠습니까?')) return;
+            const posts = getPosts().filter(p => p.id != id);
+            savePosts(posts);
+            renderAdminPosts();
+        }
+
+        function renderAdminPosts() {
+            const list = document.getElementById('post-list');
+            if(!list) return;
+            list.innerHTML = '';
+            const posts = getPosts();
+            
+            posts.forEach(post => {
+                const li = document.createElement('li');
+                li.className = 'post-item';
+                li.onclick = () => showPostDetail(post.id);
+                li.innerHTML = `
+                    <h3>${post.title}</h3>
+                    <p>${post.desc}</p>
+                    <div class="meta">
+                        <span>${post.date}</span>
+                        <button class="btn-delete" onclick="deletePost(${post.id}, event)">삭제</button>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') closeModal('post-modal');
+        }
+
+        renderAdminPosts();
+    </script>
+</body>
+</html>
